@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 import express from 'express';
 import sslRedirect from 'heroku-ssl-redirect';
 import bodyParser from 'body-parser';
