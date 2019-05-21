@@ -19,8 +19,6 @@ export async function scrapSI(_, res) {
 
     await page.goto(process.env.TARGET_SCHEDULE_PAGES);
 
-    await page.screenshot({ path: './ss.png' });
-
     const results = await page.$$eval('table.box tbody tr', elements => {
       return elements
         .slice(4)
