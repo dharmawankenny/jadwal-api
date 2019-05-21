@@ -1,0 +1,45 @@
+{
+  "name": "jadwal-api",
+  "version": "1.0.0",
+  "description": "Jadwal helps you prepare your academic class schedule ahead of time before your semester period begins. This repository holds the code used for data management & REST API service made with Node.",
+  "main": "index.js",
+  "engines": {
+    "node": "10.x"
+  },
+  "scripts": {
+    "start": "nodemon --exec babel-node ./index.js",
+    "build": "babel ./index.js --out-dir dist && babel ./api --out-dir dist/api",
+    "prod": "node ./dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dharmawankenny/jadwal-api.git"
+  },
+  "keywords": [
+    "Node",
+    "Express",
+    "Puppeteer",
+    "Jadwal"
+  ],
+  "author": "Kenny Reida Dharmawan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dharmawankenny/jadwal-api/issues"
+  },
+  "homepage": "https://github.com/dharmawankenny/jadwal-api#readme",
+  "dependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.4",
+    "@babel/node": "^7.2.2",
+    "@babel/plugin-transform-runtime": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/runtime": "^7.4.4",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "heroku-ssl-redirect": "0.0.4",
+    "nodemon": "^1.19.0",
+    "puppeteer": "^1.15.0"
+  }
+}

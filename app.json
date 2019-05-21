@@ -1,0 +1,16 @@
+{
+  "name": "jadwal-api",
+  "description": "Jadwal helps you prepare your academic class schedule ahead of time before your semester period begins. This repository holds the code used for data management & REST API service made with Node.",
+  "repository": "https://github.com/dharmawankenny/jadwal-api",
+  "logo": "https://cdn.rawgit.com/heroku/node-js-getting-started/master/public/node.svg",
+  "keywords": ["node", "heroku", "express", "puppeteer"],
+  "image": "heroku/nodejs",
+  "buildpacks": [
+    {
+      "url": "https://github.com/jontewks/puppeteer-heroku-buildpack.git"
+    },
+    {
+      "url": "https://github.com/heroku/heroku-buildpack-nodejs"
+    }
+  ]
+}
