@@ -4,8 +4,20 @@ import express from 'express';
 import sslRedirect from 'heroku-ssl-redirect';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import mongoose from 'mongoose';
+
 import jadwalScrapperRoutes from './api/routes/jadwalScrapperRoutes';
 import jadwalServerRoutes from './api/routes/jadwalServerRoutes';
+
+mongoose.Promise = global.Promise;
+
+mongoose.connect(process.env.MONGODB_CONNECTION_STRING, { useNewUrlParser: true, useFindAndModify: false })
+  .then(()=> {
+    console.log('Database connected');
+  })
+  .catch((error)=> {
+    console.log('Error connecting to database');
+  });
 
 const server = express();
 const PORT = process.env.PORT || 5000;

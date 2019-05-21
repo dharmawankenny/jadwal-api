@@ -1,23 +1,75 @@
 import puppeteer from 'puppeteer';
 
+import Jadwal from '../models/jadwalModels';
+
 export function hello(_, res) {
   res.send({ hello: 'world' });
 }
 
+export async function scrapIlkom(_, res) {
+  const result = await scrap(process.env.TARGET_SCHEDULE_PAGE_ILKOM);
+
+  if (result.error) {
+    res.send({ error: result.error, message: 'Failed to scrap the schedule' });
+  } else {
+    Jadwal.findOneAndUpdate(
+      { majorId: 'ilkom' },
+      {
+        majorId: 'ilkom',
+        ...result,
+      },
+      { new: true, upsert: true },
+      (error, newSchedule) => {
+        if (error) {
+          res.send({ error, message: 'Error in updating the newly scrapped data' });
+        } else {
+          res.send(newSchedule);
+        }
+      }
+    );
+  }
+}
+
 export async function scrapSI(_, res) {
+  const result = await scrap(process.env.TARGET_SCHEDULE_PAGE_SI);
+
+  if (result.error) {
+    res.send({ error: result.error, message: 'Failed to scrap the schedule' });
+  } else {
+    Jadwal.findOneAndUpdate(
+      { majorId: 'si' },
+      {
+        majorId: 'si',
+        ...result,
+      },
+      { new: true, upsert: true },
+      (error, newSchedule) => {
+        if (error) {
+          res.send({ error, message: 'Error in updating the newly scrapped data' });
+        } else {
+          res.send(newSchedule);
+        }
+      }
+    );
+  }
+}
+
+async function scrap(targetPage) {
   try {
     const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
 
     await page.goto(process.env.TARGET_SITE);
 
-    await page.type('input[name=u]', process.env.USERNAME_SI, { delay: 100 });
-    await page.type('input[name=p]', process.env.PASSWORD_SI, { delay: 100 });
+    await page.type('input[name=u]', process.env.USERNAME, { delay: 100 });
+    await page.type('input[name=p]', process.env.PASSWORD, { delay: 100 });
     await page.click('input[type=submit]', form => form.submit());
 
     await page.waitForNavigation();
 
-    await page.goto(process.env.TARGET_SCHEDULE_PAGES);
+    await page.goto(targetPage);
+
+    const semester = await page.$eval('div.toolbar select', select => select.options[select.selectedIndex].textContent);
 
     const results = await page.$$eval('table.box tbody tr', elements => {
       return elements
@@ -89,13 +141,16 @@ export async function scrapSI(_, res) {
         });
     });
 
-    const courseWithClass = remapToCourseWithClass(results);
+    const courses = remapToCourseWithClass(results);
 
     await browser.close();
 
-    res.send(courseWithClass);
-  } catch (err) {
-    res.send({ err });
+    return {
+      semester,
+      courses,
+    };
+  } catch (error) {
+    return ({ error });
   }
 }
 
