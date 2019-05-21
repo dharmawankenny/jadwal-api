@@ -125,7 +125,7 @@ async function scrap(targetPage) {
             return {
               day,
               startTime: startTime.replace('.', ':'),
-              endTime: startTime.replace('.', ':'),
+              endTime: endTime.replace('.', ':'),
               duration,
               location: rawClassLocationList[rawClassTimeIdx],
             };
